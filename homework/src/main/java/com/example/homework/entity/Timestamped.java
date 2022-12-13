@@ -6,6 +6,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 
+import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
@@ -14,8 +15,9 @@ import java.time.LocalDateTime;
 @EntityListeners(AuditingEntityListener.class)
 public class Timestamped {
     @CreatedDate
+    @Column(updatable = false)
     private LocalDateTime createdAt;
-
+    @Column
     @LastModifiedDate
     private LocalDateTime modifiedAt;
 }

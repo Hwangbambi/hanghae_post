@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
 
 @RestController
 @RequestMapping("/api")
@@ -20,7 +21,7 @@ public class UserController {
 
 
     @PostMapping("/signup")
-    public ResponseDto signup(@RequestBody SignupRequestDto signupRequestDto) {
+    public ResponseDto signup(@Valid @RequestBody SignupRequestDto signupRequestDto) {
         userService.signup(signupRequestDto);
         System.out.println(signupRequestDto.getUsername());
         return new ResponseDto("회원가입성공!", HttpStatus.OK.value());

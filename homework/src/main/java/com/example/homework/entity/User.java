@@ -20,11 +20,9 @@ public class User {
     // nullable: null 허용 여부
     // unique: 중복 허용 여부 (false 일때 중복 허용)
     @Column(nullable = false, unique = true)
-    @Pattern(regexp = "[a-z0-9]{4,11}")
     private String username;
 
     @Column(nullable = false)
-    @Pattern(regexp = "[a-zA-Z0-9]{8,16}")
     private String password;
 
     @Column(nullable = false, unique = true)
