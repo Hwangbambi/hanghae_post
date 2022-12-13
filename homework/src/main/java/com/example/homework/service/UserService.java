@@ -7,6 +7,7 @@ import com.example.homework.entity.UserRoleEnum;
 import com.example.homework.jwt.JwtUtil;
 import com.example.homework.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,10 +22,12 @@ public class UserService {
     private final UserRepository userRepository;
     private final JwtUtil jwtUtil;
 
+    private final PasswordEncoder passwordEncoder;
+
     @Transactional
     public void signup(SignupRequestDto signupRequestDto) {
         String username = signupRequestDto.getUsername();
-        String password = signupRequestDto.getPassword();
+        String password = passwordEncoder.encode(signupRequestDto.getPassword());
         // JPA 자바 스프링에서 사용하는 ORM 기술의 표준
         // ORM은 userRepository.findByUsername() 이런식으로 메서드 형태로 써주면 -> SQL문(query)를 데이터베이스에 전송해 데이터를 CRUD 해주는 일종의 번역기 같은 존재입니다.
         // 회원 중복 확인
@@ -36,9 +39,6 @@ public class UserService {
 
 
         String email = signupRequestDto.getEmail();
-        System.out.println("email = " + email);
-        System.out.println("userbane = " + username);
-        System.out.println("password = " + password);
         // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
         if (signupRequestDto.isAdmin()) {
@@ -62,8 +62,8 @@ public class UserService {
                 () -> new IllegalArgumentException("등록된 사용자가 없습니다.")
         );
         // 비밀번호 확인
-        if(!user.getPassword().equals(password)){
-            throw new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
+        if(!passwordEncoder.matches(password, user.getPassword())){
+            throw  new IllegalArgumentException("비밀번호가 일치하지 않습니다.");
         }
 
         response.addHeader(JwtUtil.AUTHORIZATION_HEADER, jwtUtil.createToken(user.getUsername(), user.getRole()));
