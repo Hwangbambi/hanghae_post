@@ -16,17 +16,21 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String username;
+    @Column(nullable = false)
     private String content;
 
+    @ManyToOne
+    @JoinColumn(name = "USER_ID")
+    private User user;
     @ManyToOne
     @JoinColumn(name = "article_id")
     private Article article;
 
-    public Comment(CommentRequestDto commentRequestDto, Article article, String username){
+
+    public Comment(CommentRequestDto commentRequestDto, Article article, User user){
         this.content = commentRequestDto.getComment();
         this.article = article;
-        this.username = username;
+        this.user = user;
     }
     public void update(CommentRequestDto commentRequestDto){
         this.content = commentRequestDto.getComment();

@@ -25,8 +25,7 @@ public class Article extends Timestamped {
 
     private String username;
 
-    //@OneToMany(mappedBy = "article_id")
-    //private List<Comment> commentList = new ArrayList<>();
+
 
     public Article(ArticleRequestDto requestDto , String username){
         this.title = requestDto.getTitle();
