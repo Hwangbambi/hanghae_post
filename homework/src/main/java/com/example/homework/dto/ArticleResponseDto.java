@@ -14,31 +14,23 @@ import java.util.stream.Collectors;
 @Setter
 @NoArgsConstructor
 public class ArticleResponseDto {
+    private Long id;
     private String title;
     private String username;
     private String content;
-    //private String password;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
-
     private List<CommentResponseDto> commentList = new ArrayList<>();
 
     public ArticleResponseDto(Article article){
-        this.title = article.getTitle();
-        this.username = article.getUser().getUsername();
-        this.content = article.getContent();
-        this.createdAt = article.getCreatedAt();
-        this.modifiedAt = article.getModifiedAt();
-        //System.out.println("getCreatedAt() = " + getCreatedAt());
-    }
-
-    public void setArticleResponseDto(Article article){
+        this.id = article.getId();
         this.title = article.getTitle();
         this.username = article.getUser().getUsername();
         this.content = article.getContent();
         this.createdAt = article.getCreatedAt();
         this.modifiedAt = article.getModifiedAt();
         this.commentList = article.getCommentList().stream().map(CommentResponseDto::new).collect(Collectors.toList());
-        //System.out.println("getCreatedAt() = " + getCreatedAt());
+
     }
+
 }

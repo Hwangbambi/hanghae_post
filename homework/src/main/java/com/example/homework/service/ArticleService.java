@@ -1,10 +1,7 @@
 package com.example.homework.service;
 
 import com.example.homework.config.ServiceConfig;
-import com.example.homework.dto.ArticleDeleteRequestDto;
-import com.example.homework.dto.ArticleRequestDto;
-import com.example.homework.dto.ArticleResponseDto;
-import com.example.homework.dto.ResponseDto;
+import com.example.homework.dto.*;
 import com.example.homework.entity.Article;
 import com.example.homework.entity.User;
 import com.example.homework.jwt.JwtUtil;
@@ -14,6 +11,7 @@ import com.example.homework.security.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,23 +34,16 @@ public class ArticleService {
             return new ResponseDto("글 등록 완료", HttpStatus.OK.value());
     }
     @Transactional(readOnly = true)
-    public ResponseDto getArticles() {
-        ArticleResponseDto articleResponseDto = new ArticleResponseDto();
-
-        List<ArticleResponseDto> articleListResponseDto = new ArrayList<>();
+    public ArticleListResponseDto getArticles() {
+        ArticleListResponseDto articleListResponseDto = new ArticleListResponseDto();
 
         List<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc();
 
-        for(Article article :articles){
-            articleResponseDto.setArticleResponseDto(article);
-            articleListResponseDto.add(articleResponseDto);
+        for(Article article : articles){
+            articleListResponseDto.addArticle(new ArticleResponseDto(article));
         }
-        ResponseDto responseDto = new ResponseDto();
-        responseDto.setMsg("성공");
-        responseDto.setStatusCode(200);
-        responseDto.setData(articleListResponseDto);
 
-        return responseDto;
+        return articleListResponseDto;
     }
     @Transactional(readOnly = true)
     public ArticleResponseDto getArticle(Long id) {

@@ -9,8 +9,8 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ResponseDto {
     private String msg;
-    private Object data;
     private int statusCode;
+    //private Object data;
 
     public ResponseDto(String msg, int statusCode){
         this.msg = msg;
