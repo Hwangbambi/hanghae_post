@@ -10,6 +10,7 @@ import com.example.homework.entity.User;
 import com.example.homework.jwt.JwtUtil;
 import com.example.homework.repository.ArticleRepository;
 import com.example.homework.repository.UserRepository;
+import com.example.homework.security.UserDetailsImpl;
 import io.jsonwebtoken.Claims;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class ArticleService {
 
     @Transactional
     public ResponseDto saveArticle(ArticleRequestDto requestDto, User user) {
-            Article article = articleRepository.saveAndFlush(new Article(requestDto , user.getUsername()));
+        Article article = articleRepository.saveAndFlush(new Article(requestDto , user));
             articleRepository.save(article);
             return new ResponseDto("글 등록 완료", HttpStatus.OK.value());
     }
@@ -38,18 +39,18 @@ public class ArticleService {
     public ResponseDto getArticles() {
         ArticleResponseDto articleResponseDto = new ArticleResponseDto();
 
-        List<ArticleResponseDto> articleListResponseDtos = new ArrayList<>();
+        List<ArticleResponseDto> articleListResponseDto = new ArrayList<>();
 
-        List<Article> articles = articleRepository.findAll();
+        List<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc();
 
         for(Article article :articles){
             articleResponseDto.setArticleResponseDto(article);
-            articleListResponseDtos.add(articleResponseDto);
+            articleListResponseDto.add(articleResponseDto);
         }
         ResponseDto responseDto = new ResponseDto();
         responseDto.setMsg("성공");
         responseDto.setStatusCode(200);
-        responseDto.setData(articleListResponseDtos);
+        responseDto.setData(articleListResponseDto);
 
         return responseDto;
     }
@@ -61,10 +62,9 @@ public class ArticleService {
         return new ArticleResponseDto(article);
     }
     @Transactional
-    public ArticleResponseDto updateArticle(Long id, ArticleResponseDto requestDto,User user) {
+    public ArticleResponseDto updateArticle(Long id, ArticleResponseDto requestDto, UserDetailsImpl userDetails) {
 
-
-        Article article = articleRepository.findByIdAndUsername(id, user.getUsername()).orElseThrow(
+        Article article = articleRepository.findByIdAndUser(id, userDetails.getUser()).orElseThrow(
                 ()-> new RuntimeException("글이 없거나 본인 글이 아닙니다")
         );
         article.update(requestDto);
@@ -72,9 +72,9 @@ public class ArticleService {
     }
 
     @Transactional
-    public boolean deleteArticle(Long id , ArticleDeleteRequestDto requestDto , User user){
+    public boolean deleteArticle(Long id , ArticleDeleteRequestDto requestDto , UserDetailsImpl userDetails){
 
-        Article article = articleRepository.findByIdAndUsername(id, user.getUsername()).orElseThrow(
+        Article article = articleRepository.findByIdAndUser(id, userDetails.getUser()).orElseThrow(
                 ()-> new RuntimeException("글이 없다")
         );
         articleRepository.delete(article);

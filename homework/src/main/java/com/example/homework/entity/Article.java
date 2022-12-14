@@ -19,24 +19,30 @@ public class Article extends Timestamped {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private String name;
+    //private String name;
     private String content;
-    private String password;
+    //private String password;
 
-    private String username;
+    //private String username;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
+    @OneToMany(mappedBy = "article", fetch = FetchType.LAZY)
+    @OrderBy("id asc")
+    private List<Comment> commentList = new ArrayList<>();
 
-    public Article(ArticleRequestDto requestDto , String username){
+    public Article(ArticleRequestDto requestDto , User user){
         this.title = requestDto.getTitle();
-        this.name = requestDto.getName();
+        //this.name = requestDto.getName();
         this.content = requestDto.getContent();
-        this.password = requestDto.getPassword();
-        this.username = username;
+        //this.password = requestDto.getPassword();
+        this.user = user;
     }
     public void update(ArticleResponseDto responseDto){
         this.title = responseDto.getTitle();
-        this.name = responseDto.getName();
+        //this.name = responseDto.getName();
         this.content = responseDto.getContent();
 
     }

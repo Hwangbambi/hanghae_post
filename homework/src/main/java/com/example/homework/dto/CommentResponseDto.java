@@ -7,12 +7,13 @@ public class CommentResponseDto {
 
     private Long id;
     private String username;
-    private String comment;
-
+    private String content;
+    private int good;
 
     public CommentResponseDto(Comment comment) {
-        this.id= comment.getId();
+        this.id = comment.getId();
         this.username = comment.getUser().getUsername();
-        this.comment = comment.getContent();
+        this.content = comment.getContent();
+        this.good = comment.getGood();
     }
 }

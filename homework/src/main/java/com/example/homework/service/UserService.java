@@ -37,8 +37,6 @@ public class UserService {
             throw new IllegalArgumentException("중복된 사용자가 존재합니다.");
         }
 
-
-        String email = signupRequestDto.getEmail();
         // 사용자 ROLE 확인
         UserRoleEnum role = UserRoleEnum.USER;
         if (signupRequestDto.isAdmin()) {
@@ -48,7 +46,7 @@ public class UserService {
             role = UserRoleEnum.ADMIN;
         }
         System.out.println("role = " + role);
-        User user = new User(username, password, email, role);
+        User user = new User(username, password, role);
         userRepository.save(user);
     }
 

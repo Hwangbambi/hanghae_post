@@ -35,11 +35,11 @@ public class ArticleController {
 
     @PutMapping("/update/article/{id}")
     public ArticleResponseDto updateArticle(@PathVariable Long id, @RequestBody ArticleResponseDto requestDto, @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return articleService.updateArticle(id,requestDto, userDetails.getUser());
+        return articleService.updateArticle(id,requestDto, userDetails);
     }
     @DeleteMapping("/delete/article/{id}")
     public boolean deleteArticle(@PathVariable Long id, @RequestBody ArticleDeleteRequestDto requestDto ,  @AuthenticationPrincipal UserDetailsImpl userDetails){
-        return articleService.deleteArticle(id , requestDto , userDetails.getUser());
+        return articleService.deleteArticle(id , requestDto , userDetails);
     }
 
 }
