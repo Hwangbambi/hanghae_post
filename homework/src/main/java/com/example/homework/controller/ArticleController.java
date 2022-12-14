@@ -1,9 +1,6 @@
 package com.example.homework.controller;
 
-import com.example.homework.dto.ArticleDeleteRequestDto;
-import com.example.homework.dto.ArticleRequestDto;
-import com.example.homework.dto.ArticleResponseDto;
-import com.example.homework.dto.ResponseDto;
+import com.example.homework.dto.*;
 import com.example.homework.security.UserDetailsImpl;
 import com.example.homework.service.ArticleService;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +21,7 @@ public class ArticleController {
         return articleService.saveArticle(requestDto,userDetails.getUser());
     }
     @GetMapping("/get/articles")
-    public ResponseDto getArticles(){
+    public ArticleListResponseDto getArticles(){
         return articleService.getArticles();
     }
 

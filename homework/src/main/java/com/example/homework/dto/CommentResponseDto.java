@@ -8,7 +8,14 @@ public class CommentResponseDto {
     private Long id;
     private String username;
     private String content;
-    private Integer good;
+    private int good;
+
+    public CommentResponseDto(Comment comment) {
+        this.id = comment.getId();
+        this.username = comment.getUser().getUsername();
+        this.content = comment.getContent();
+        this.good = comment.getGood();
+    }
 
     public CommentResponseDto(Comment comment, int cnt) {
         this.id = comment.getId();
@@ -16,4 +23,5 @@ public class CommentResponseDto {
         this.content = comment.getContent();
         this.good = cnt;
     }
+
 }
