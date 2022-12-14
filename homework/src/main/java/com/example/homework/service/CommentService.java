@@ -8,6 +8,7 @@ import com.example.homework.entity.Comment;
 import com.example.homework.entity.User;
 import com.example.homework.entity.UserRoleEnum;
 import com.example.homework.repository.ArticleRepository;
+import com.example.homework.repository.CommentLikeRepository;
 import com.example.homework.repository.CommentRepository;
 import com.example.homework.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -22,6 +23,7 @@ import javax.servlet.http.HttpServletRequest;
 public class CommentService {
     private final ArticleRepository articleRepository;
     private final CommentRepository commentRepository;
+    private final CommentLikeRepository commentLikeRepository;
 
     @Transactional
     public CommentResponseDto saveComment(Long postid, CommentRequestDto requestDto, User user){
@@ -29,7 +31,8 @@ public class CommentService {
                 () -> new IllegalArgumentException("해당 게시글이 없습니다.")
         );
         Comment comment = commentRepository.saveAndFlush(new Comment(requestDto,article,user));
-        return new CommentResponseDto(comment);
+        int cnt = 0;
+        return new CommentResponseDto(comment,cnt);
     }
     @Transactional
     public CommentResponseDto updateComment(Long commentid, CommentRequestDto requestDto, User user) {
@@ -43,10 +46,11 @@ public class CommentService {
             );
         }
         comment.update(requestDto);
-        return new CommentResponseDto(comment);
+        return new CommentResponseDto(comment, commentLikeRepository.countAllByComment_Id(comment.getId()));
 
     }
 
+    @Transactional
     public ResponseDto deleteComment(Long commentid, User user) {
         if(user.getRole()== UserRoleEnum.USER){
                 commentRepository.deleteByIdAndUser(commentid,user);
@@ -55,4 +59,7 @@ public class CommentService {
         }
         return new ResponseDto("댓글 삭제 성공", 200);
     }
+
+
+
 }

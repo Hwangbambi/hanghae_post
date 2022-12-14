@@ -8,12 +8,12 @@ public class CommentResponseDto {
     private Long id;
     private String username;
     private String content;
-    private int good;
+    private Integer good;
 
-    public CommentResponseDto(Comment comment) {
+    public CommentResponseDto(Comment comment, int cnt) {
         this.id = comment.getId();
         this.username = comment.getUser().getUsername();
         this.content = comment.getContent();
-        this.good = comment.getGood();
+        this.good = cnt;
     }
 }
