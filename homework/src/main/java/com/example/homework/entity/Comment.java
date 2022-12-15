@@ -28,7 +28,7 @@ public class Comment {
     @JoinColumn(name = "article_id")
     private Article article;
 
-    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LikeComment> likeComments = new ArrayList<>();
 
 
