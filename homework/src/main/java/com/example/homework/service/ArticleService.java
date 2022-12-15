@@ -40,6 +40,7 @@ public class ArticleService {
         List<Article> articles = articleRepository.findAllByOrderByCreatedAtDesc();
 
         for(Article article : articles){
+
             articleListResponseDto.addArticle(new ArticleResponseDto(article));
         }
 

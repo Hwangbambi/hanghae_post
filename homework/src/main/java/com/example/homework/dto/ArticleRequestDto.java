@@ -10,8 +10,6 @@ import lombok.Setter;
 @NoArgsConstructor
 public class ArticleRequestDto {
     private String title;
-    //private String name;
     private String content;
-    //private String password;
 
 }

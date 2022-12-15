@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Getter
@@ -15,7 +17,6 @@ public class Comment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private int good;
     @Column(nullable = false)
     private String content;
 
@@ -26,6 +27,9 @@ public class Comment {
     @ManyToOne
     @JoinColumn(name = "article_id")
     private Article article;
+
+    @OneToMany(mappedBy = "comment", fetch = FetchType.LAZY)
+    private List<LikeComment> likeComments = new ArrayList<>();
 
 
     public Comment(CommentRequestDto commentRequestDto, Article article, User user){

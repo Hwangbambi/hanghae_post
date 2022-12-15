@@ -20,6 +20,7 @@ public class ArticleResponseDto {
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime modifiedAt;
+    private int good;
     private List<CommentResponseDto> commentList = new ArrayList<>();
 
     public ArticleResponseDto(Article article){
@@ -29,6 +30,7 @@ public class ArticleResponseDto {
         this.content = article.getContent();
         this.createdAt = article.getCreatedAt();
         this.modifiedAt = article.getModifiedAt();
+        this.good = article.getLikeArticles().size();
         this.commentList = article.getCommentList().stream().map(CommentResponseDto::new).collect(Collectors.toList());
 
     }

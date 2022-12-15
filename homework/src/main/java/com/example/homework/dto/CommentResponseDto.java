@@ -14,7 +14,7 @@ public class CommentResponseDto {
         this.id = comment.getId();
         this.username = comment.getUser().getUsername();
         this.content = comment.getContent();
-        this.good = comment.getGood();
+        this.good = comment.getLikeComments().size();
     }
 
     public CommentResponseDto(Comment comment, int cnt) {
